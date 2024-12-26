@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Post List</title>
+
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="list-title">
+        <h1>Post List</h1>
+        <div>
+            <a href="/posts/new" class="btn btn-primary">Create New Post</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="post-no">Post No</th>
+            <th class="title">Title</th>
+            <th class="author">Author</th>
+            <th class="views">Views</th>
+            <th class="creation-date">Creation Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${!posts.isEmpty()}" th:each="post : ${posts}">
+            <td th:text="${post.postId}"></td>
+            <td><a th:href="@{/posts/{postId}(postId=${post.postId})}" th:text="${post.title}"></a></td>
+            <td th:text="${post.author}"></td>
+            <td th:text="${post.viewCount != null ? post.viewCount : 0}"></td>
+            <td th:text="${#dates.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:if="${posts.isEmpty()}" class="text-center mt-5">
+        <img th:src="@{/images/icon-empty-data.png}" alt="No Data" class="img-fluid" style="max-width: 200px;">
+        <p class="text-muted mt-3">No posts available. Please create a new post to see it listed here.</p>
+    </div>
+</div>
+
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

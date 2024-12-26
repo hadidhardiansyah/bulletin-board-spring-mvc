@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Post Detail</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center mb-4">Post Detail</h1>
+    <div class="list-item">
+        <div class="detail-item">
+            <strong>Title:</strong> <span th:text="${post.title}"></span>
+        </div>
+        <div class="detail-item">
+            <strong>Author:</strong> <span th:text="${post.author}"></span>
+        </div>
+        <div class="detail-item">
+            <strong>Created At:</strong> <span th:text="${#dates.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+        </div>
+        <div class="detail-item">
+            <strong>View Count:</strong> <span th:text="${post.viewCount}"></span>
+        </div>
+        <div class="detail-item">
+            <strong>Content:</strong>
+            <p th:text="${post.content}"></p>
+        </div>
+    </div>
+
+    <div class="password-area">
+        <form th:action="@{/posts/delete/{postId}(postId=${post.postId})}" method="POST" class="d-flex align-items-center" id="deleteForm">
+            <input type="password" name="password" placeholder="Enter password to delete" class="form-control me-2" required>
+            <img th:src="@{/images/icon-trash.png}" alt="delete" class="img-trash" style="max-width: 20px; cursor: pointer;" onclick="document.getElementById('deleteForm').submit();">
+        </form>
+    </div>
+
+    <div class="btn-group d-flex justify-content-between align-items-center mt-3 action-button">
+        <a href="/posts" class="btn btn-secondary">Back to List</a>
+        <a th:href="@{/posts/edit/{postId}(postId=${post.postId})}" class="btn btn-warning">Edit</a>
+    </div>
+</div>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.bulletinboard.mapper.PostMapper">
+
+    <!-- Select All Posts -->
+    <select id="getAllPosts" resultType="com.project.bulletinboard.model.Post">
+        SELECT post_id AS postId, title, author, created_at AS createdAt, updated_at, view_count AS viewCount
+        FROM posts
+        WHERE is_deleted = FALSE
+        ORDER BY created_at DESC;
+    </select>
+
+    <!-- Select Post by ID -->
+    <select id="getPostById" parameterType="long" resultType="com.project.bulletinboard.model.Post">
+        SELECT post_id AS postId, title, author, content, password, created_at AS createdAt, updated_at, view_count AS viewCount
+        FROM posts
+        WHERE post_id = #{postId};
+    </select>
+
+    <!-- Insert New Post -->
+    <insert id="insertPost" parameterType="com.project.bulletinboard.model.Post">
+        INSERT INTO posts (title, author, content, password, created_at)
+        VALUES (#{title}, #{author}, #{content}, #{password}, CURRENT_TIMESTAMP);
+    </insert>
+
+    <!-- Update Post -->
+    <update id="updatePost" parameterType="com.project.bulletinboard.model.Post">
+        UPDATE posts
+        SET title = #{title}, author = #{author}, content = #{content}, updated_at = CURRENT_TIMESTAMP
+        WHERE post_id = #{postId} AND password = #{password};
+    </update>
+
+    <!-- Delete Post (Soft Delete: update content) -->
+    <update id="deletePost" parameterType="map">
+        UPDATE posts
+        SET is_deleted = TRUE
+        WHERE post_id = #{postId} AND password = #{password};
+    </update>
+
+    <!-- Increment View Count -->
+    <update id="incrementViewCount" parameterType="long">
+        UPDATE posts
+        SET view_count = view_count + 1
+        WHERE post_id = #{postId};
+    </update>
+
+</mapper>
